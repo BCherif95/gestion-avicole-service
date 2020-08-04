@@ -25,6 +25,10 @@ public class Role implements GrantedAuthority, Serializable {
     private String name;
     private String description;
 
+    public Role(String name) {
+        this.name = name;
+    }
+
     @LazyCollection(LazyCollectionOption.FALSE)
     @ManyToMany
     @JoinTable(
