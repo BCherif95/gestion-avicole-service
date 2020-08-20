@@ -22,10 +22,12 @@ public class Invoice extends Auditable<Invoice> implements Serializable {
     private Long id;
     private String reference;
     private String number;
+    @Column(name = "delivery_delay")
+    private String deliveryDelay;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "invoice_date")
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss")
-    private Date invoiceDate;
+    private Date invoiceDate = new Date();
     @Enumerated(EnumType.STRING)
     private Enumeration.INVOICE_STATE state = Enumeration.INVOICE_STATE.OPEN;
     @Column(name = "method_of_payment")
@@ -46,6 +48,10 @@ public class Invoice extends Auditable<Invoice> implements Serializable {
     @Column(name = "stay_to_pay")
     private Double stayToPay = 0D; // balance = reste a payer
     private boolean paid = false;
+    @Column(name = "payment_count")
+    private int paymentCount;
+    @Column(name = "editable")
+    private boolean editable = true;
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "last_payment_date")
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss")

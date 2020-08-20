@@ -67,7 +67,7 @@ public class Enumeration {
     }
 
     public enum PAYMENT_STATE {
-        WAITING("En attente"),
+        PENDING("En attente"),
         VALIDATE("Payée");
 
         private final String desc;

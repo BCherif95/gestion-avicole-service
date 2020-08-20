@@ -9,6 +9,9 @@ import java.util.Date;
 import java.util.List;
 
 public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
+
+    Invoice findInvoiceById(@Param("id") Long id);
+
     @Query("SELECT i from Invoice i where DATE(i.invoiceDate) = DATE(:invoiceDate)")
     List<Invoice> findAllInvoiceByDate(@Param("invoiceDate") Date invoiceDate);
 

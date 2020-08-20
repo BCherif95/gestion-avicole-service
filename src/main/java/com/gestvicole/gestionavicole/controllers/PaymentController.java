@@ -19,7 +19,7 @@ public class PaymentController {
         return ResponseEntity.ok(paymentService.findAll());
     }
 
-    @PostMapping("/save")
+    @PostMapping("/create")
     private ResponseEntity<?> create(@RequestBody Payment payment){
         return ResponseEntity.ok(paymentService.create(payment));
     }
@@ -29,8 +29,18 @@ public class PaymentController {
         return ResponseEntity.ok(paymentService.update(payment));
     }
 
+    @PostMapping("/validate")
+    public ResponseEntity<?> save(@RequestBody Payment payment) {
+        return ResponseEntity.ok(paymentService.validate(payment));
+    }
+
     @PutMapping("/cancel")
     private ResponseEntity<?> cancel(@RequestBody Payment payment){
         return ResponseEntity.ok(paymentService.cancelPayment(payment));
+    }
+
+    @GetMapping("/{id}/get")
+    public ResponseEntity<?> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(paymentService.getById(id));
     }
 }

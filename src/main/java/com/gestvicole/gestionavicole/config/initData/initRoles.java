@@ -20,8 +20,6 @@ public class initRoles implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-        System.out.println("Init roles ....");
-
         Role roleAdmin = roleRepository.findByName("ADMIN");
         if (roleAdmin == null) {
             roleAdmin = new Role("ADMIN");

@@ -3,10 +3,11 @@ package com.gestvicole.gestionavicole.config.initData;
 import com.gestvicole.gestionavicole.entities.Role;
 import com.gestvicole.gestionavicole.entities.User;
 import com.gestvicole.gestionavicole.repositories.RoleRepository;
-import com.gestvicole.gestionavicole.services.UserService;
+import com.gestvicole.gestionavicole.repositories.UserRepository;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
@@ -17,27 +18,32 @@ import java.util.Set;
 @Order(2)
 public class initUsers implements ApplicationRunner {
 
-    private final UserService userService;
+    private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public initUsers(UserService userService, RoleRepository roleRepository) {
-        this.userService = userService;
+    public initUsers(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
     }
+
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-        System.out.println("Init users ....");
-
         Role role = roleRepository.findByName("ADMIN");
 
-        User user = new User();
-        user.setUsername("admin");
-        user.setPassword("admin");
-        Set<Role> roles = new HashSet<>(Collections.singletonList(role));
-        user.setRoles(roles);
-        userService.create(user);
+        User userAdmin = userRepository.findByUsername("admin");
+
+        if (userAdmin == null) {
+            userAdmin = new User();
+            userAdmin.setUsername("admin");
+            userAdmin.setPassword(passwordEncoder.encode("admin"));
+            Set<Role> roles = new HashSet<>(Collections.singletonList(role));
+            userAdmin.setRoles(roles);
+            userRepository.save(userAdmin);
+        }
 
     }
 }

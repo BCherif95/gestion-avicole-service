@@ -2,12 +2,20 @@ package com.gestvicole.gestionavicole;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 
 @SpringBootApplication
-public class GestionAvicoleApplication {
+public class GestionAvicoleApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
-		SpringApplication.run(GestionAvicoleApplication.class, args); }
+		SpringApplication.run(GestionAvicoleApplication.class, args);
+	}
+
+	@Override
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+		return builder.sources(GestionAvicoleApplication.class);
+	}
 
 }

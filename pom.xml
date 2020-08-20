@@ -12,6 +12,7 @@
 	<artifactId>gestion-avicole</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>trans-route-service</name>
+	<packaging>war</packaging>
 	<description>Trans route project service</description>
 
 	<properties>
