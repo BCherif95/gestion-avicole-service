@@ -26,6 +26,11 @@ public class InvoiceController {
         return ResponseEntity.ok(invoiceService.getInvoice(id));
     }
 
+    @PutMapping("/an-validate")
+    public ResponseEntity<?> validateAnInvoice(@RequestBody Invoice invoice) {
+        return ResponseEntity.ok(invoiceService.validateAnInvoice(invoice));
+    }
+
     @PostMapping("/save")
     private ResponseEntity<?> create(@RequestBody Invoice invoice){
         return ResponseEntity.ok(invoiceService.create(invoice));

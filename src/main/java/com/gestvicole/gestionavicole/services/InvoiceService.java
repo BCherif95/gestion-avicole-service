@@ -97,6 +97,20 @@ public class InvoiceService {
         }
     }
 
+    public ResponseBody validateAnInvoice(Invoice invoice) {
+        try {
+
+            invoice.setEditable(false);
+            invoice.setState(Enumeration.INVOICE_STATE.VALIDATE);
+            Invoice validatedInvoice = invoiceRepository.save(invoice);
+
+            return ResponseBody.with(validatedInvoice, "Facture validee avec succes !");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseBody.error("Une erreur est survenue");
+        }
+    }
+
     public ResponseBody initInvoiceDash(SearchBody searchBody) {
         try {
             SaleDashBody saleDashBody = new SaleDashBody();
