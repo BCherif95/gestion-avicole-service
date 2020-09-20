@@ -32,6 +32,20 @@ public class RoleService {
         }
     }
 
+    public ResponseBody create(Role role) {
+        try {
+            if (roleRepository.existsByName(role.getName())) {
+                return ResponseBody.error("Ce role existe déjà !!!");
+            }
+            roleRepository.save(role);
+            return ResponseBody.with(role, "Role ajouter avec succes!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseBody.error("Une erreur est survenue");
+        }
+
+    }
+
     public ResponseBody save(Role role) {
         try {
             if (roleRepository.existsByName(role.getName())) {

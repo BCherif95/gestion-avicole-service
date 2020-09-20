@@ -27,7 +27,7 @@ public class RoleController {
 
     @PostMapping("/save")
     public ResponseEntity<?> create(@RequestBody Role role) {
-        return ResponseEntity.ok(roleService.save(role));
+        return ResponseEntity.ok(roleService.create(role));
     }
 
     @PutMapping("/update")
