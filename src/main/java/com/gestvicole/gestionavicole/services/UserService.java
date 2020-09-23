@@ -130,7 +130,9 @@ public class UserService {
                 .stream()
                 .map(this::entry)
                 .collect(toMap(SimpleEntry::getKey, SimpleEntry::getValue));
-        authorizations.put("list", true);
+        if (!authorizations.containsKey("list")) {
+            authorizations.put("list", true);
+        }
         return AuthzRole
                 .builder()
                 .name(role)
