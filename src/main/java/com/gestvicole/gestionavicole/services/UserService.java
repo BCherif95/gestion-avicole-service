@@ -1,5 +1,8 @@
 package com.gestvicole.gestionavicole.services;
 
+import com.gestvicole.gestionavicole.entities.AuthzRole;
+import com.gestvicole.gestionavicole.entities.Privilege;
+import com.gestvicole.gestionavicole.entities.Role;
 import com.gestvicole.gestionavicole.entities.User;
 import com.gestvicole.gestionavicole.exception.CustomException;
 import com.gestvicole.gestionavicole.repositories.UserRepository;
@@ -9,8 +12,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.Date;
-import java.util.List;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.lang.String.format;
+import static java.util.Arrays.stream;
+import static java.util.stream.Collectors.toMap;
 
 @Service
 public class UserService {
@@ -91,5 +99,70 @@ public class UserService {
             e.printStackTrace();
             return ResponseBody.error("Ce nom existe deja!");
         }
+    }
+
+    public List<AuthzRole> roles(Long id) {
+        ResponseBody body = getUser(Objects.nonNull(id) ? id : null);
+        if (Objects.isNull(body) || !body.getStatus().equalsIgnoreCase("Ok")) {
+            return emptyList();
+        }
+        User user = (User) body.getResponse();
+        Set<Role> roles = user.getRoles();
+        return Objects.isNull(roles) || roles.isEmpty() ? emptyList() : roles
+                .stream()
+                .findFirst()
+                .map(Role::getPrivileges)
+                .orElse(emptySet())
+                .stream()
+                .map(this::exactRole)
+                .filter(Objects::nonNull)
+                .collect(Collectors.groupingBy(s -> s.split(":")[0]))
+                .entrySet()
+                .stream()
+                .map(this::toAuthzRole)
+                .collect(Collectors.toList());
+    }
+
+    private AuthzRole toAuthzRole(Map.Entry<String, List<String>> entry) {
+        final String role = entry.getKey();
+        final Map<String, Boolean> authorizations = entry
+                .getValue()
+                .stream()
+                .map(this::entry)
+                .collect(toMap(SimpleEntry::getKey, SimpleEntry::getValue));
+        authorizations.put("list", true);
+        return AuthzRole
+                .builder()
+                .name(role)
+                .type("single")
+                .authorizations(authorizations)
+                .build();
+    }
+
+    private SimpleEntry<String, Boolean> entry(String authority) {
+        String[] parts = authority.split(":");
+        return new SimpleEntry<>(parts[parts.length - 1], true);
+    }
+
+    private String exactRole(Privilege privilege) {
+        String name = privilege.getName().toLowerCase();
+        String[] parts = name.split("_");
+        String authority = parts.length > 0 ? parts[0] : null;
+        if (Objects.isNull(authority)) {
+            return null;
+        }
+        String role = parts.length > 1 ? stream(parts).skip(1).reduce("", (a, b) -> a.isEmpty() ? b : format("%s_%s", a, b)) : null;
+        if (Objects.isNull(role)) {
+            return null;
+        }
+        return format("%s:%s", role, authority);
+    }
+
+    private <T> List<T> emptyList() {
+        return new ArrayList<>(0);
+    }
+
+    private <T> Set<T> emptySet() {
+        return new HashSet<>(0);
     }
 }

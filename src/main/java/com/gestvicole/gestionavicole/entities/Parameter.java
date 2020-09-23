@@ -12,12 +12,12 @@ public class Parameter implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column(name = "last_invoice_number")
-    private Long lastInvoiceNumber;
+    private Long lastInvoiceNumber = 0L;
     @Column(name = "last_order_number")
-    private Long lastOrderNumber;
+    private Long lastOrderNumber = 0L;
     @Column(name = "invoice_footer")
     private String invoiceFooter;
 
