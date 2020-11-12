@@ -20,10 +20,10 @@ public class Stock extends AuditableParent<Stock> implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "quantity_entry")
-    private Integer quantityEntry = 0;
+    private Double quantityEntry = 0D;
     @Column(name = "quantity_out")
-    private Integer quantityOut = 0;
-    private Integer solde = 0;
+    private Double quantityOut = 0D;
+    private Double solde = 0D;
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss")
     private Date date;
     @ManyToOne

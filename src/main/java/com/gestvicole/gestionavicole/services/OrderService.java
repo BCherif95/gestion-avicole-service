@@ -7,8 +7,11 @@ import com.gestvicole.gestionavicole.repositories.OrderRepository;
 import com.gestvicole.gestionavicole.repositories.ProductionRepository;
 import com.gestvicole.gestionavicole.utils.Enumeration;
 import com.gestvicole.gestionavicole.utils.ResponseBody;
+import com.gestvicole.gestionavicole.utils.SearchBody;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,6 +26,24 @@ public class OrderService {
         this.orderRepository = orderRepository;
         this.parameterComponent = parameterComponent;
         this.productionRepository = productionRepository;
+    }
+
+    public Integer getQuantityAvailable(SearchBody searchBody) {
+
+        int qteProd = 0;
+        int qteOrder = 0;
+        List<Production> productions = productionRepository.findAllByDate(searchBody.getDate());
+        List<Order> orders = orderRepository.findAllOrderByDate(searchBody.getDate());
+
+        qteProd = productions
+                .stream()
+                .map(Production::getCommercialProductions)
+                .reduce(0, Integer::sum);
+        qteOrder = orders
+                .stream()
+                .map(Order::getQuantity)
+                .reduce(0,Integer::sum);
+        return qteProd - qteOrder;
     }
 
     public ResponseBody findAll() {
@@ -53,7 +74,7 @@ public class OrderService {
         }
     }
 
-    public ResponseBody create(Order order) {
+   /* public ResponseBody create(Order order) {
         try {
             if (order.getQuantity() == 0) {
                 return ResponseBody.error("La quantité ne peut etre vide");
@@ -71,18 +92,28 @@ public class OrderService {
             e.printStackTrace();
             return ResponseBody.error("Une erreur est survenue");
         }
+    }*/
+
+    public ResponseBody toOrder(Order order) {
+        try {
+            if (order.getQuantity() == 0) {
+                return ResponseBody.error("La quantité ne peut pas etre vide !!!");
+            }
+            order.setNumber(parameterComponent.generateOrderNumber());
+            order.setAmount(order.getQuantity()*order.getUnitPrice());
+            orderRepository.save(order);
+            parameterComponent.updateOrderNumber();
+            return ResponseBody.with(order,"Commander avec succes");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseBody.error("Une erreur est survenue");
+        }
     }
 
     public ResponseBody edit(Order order) {
         try {
             if (orderRepository.findById(order.getId()).isPresent() && order.getQuantity() != 0) {
                 Optional<Production> production = productionRepository.findById(order.getProduction().getId());
-                if (production.isPresent()){
-                    Production prod = production.get();
-                    Integer newQte = prod.getCommercialProductions() - order.getQuantity();
-                    prod.setCommercialProductions(newQte);
-                    productionRepository.save(prod);
-                }
                 order.setAmount(order.getQuantity()*order.getUnitPrice());
                 orderRepository.save(order);
                 return ResponseBody.with(order,"Modifier avec succes");

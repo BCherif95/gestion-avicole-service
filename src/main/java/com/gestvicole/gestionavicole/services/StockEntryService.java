@@ -47,18 +47,27 @@ public class StockEntryService {
             Stock stock1 = stockOptional.get();
             List<StockEntry> stockEntries = stockEntryRepository.findAllByProductId(stock1.getProduct().getId());
             stock1.setDate(new Date());
-            stock1.setQuantityEntry(stockEntries
+            /*stock1.setQuantityEntry(stockEntries
                     .stream()
-                    .map(StockEntry::getQuantityEntry)
+                    .map(stockEntry1 -> stockEntry1.getQuantityEntry().toString())
                     .reduce(0,Integer::sum));
+            stock1.setSolde(stock1.getQuantityEntry() - stock1.getQuantityOut());*/
+            stock1.setQuantityEntry(
+                    Optional.of(stockEntries
+                            .stream()
+                            .map(entry -> entry.getQuantityEntry().toString())
+                            .mapToDouble(Double::parseDouble)
+                            .sum())
+                            .orElse(0.0)
+            );
             stock1.setSolde(stock1.getQuantityEntry() - stock1.getQuantityOut());
-            stockRepository.save(stock1);;
+            stockRepository.save(stock1);
         }else {
             Stock stock = new Stock();
             stock.setDate(new Date());
             stock.setProduct(stockEntry.getProduct());
             stock.setQuantityEntry(stockEntry.getQuantityEntry());
-            stock.setQuantityOut(0);
+            stock.setQuantityOut(0D);
             stock.setSolde(stock.getQuantityEntry());
             stockRepository.save(stock);
         }

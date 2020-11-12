@@ -55,10 +55,18 @@ public class StockOutService {
             Stock stock1 = stockOptional.get();
             List<StockOut> stockOuts = stockOutRepository.findAllByProductId(stock1.getProduct().getId());
             stock1.setDate(new Date());
-            stock1.setQuantityOut(stockOuts
+            /*stock1.setQuantityOut(stockOuts
                     .stream()
                     .map(StockOut::getQuantityOut)
-                    .reduce(0,Integer::sum));
+                    .reduce(0,Integer::sum));*/
+            stock1.setQuantityOut(
+                    Optional.of(stockOuts
+                            .stream()
+                            .map(out -> out.getQuantityOut().toString())
+                            .mapToDouble(Double::parseDouble)
+                            .sum())
+                            .orElse(0.0)
+            );
             stock1.setSolde(stock1.getQuantityEntry() - stock1.getQuantityOut());
             stockRepository.save(stock1);
             return ResponseBody.with(newStockOut,"Sortie valider avec succès !");

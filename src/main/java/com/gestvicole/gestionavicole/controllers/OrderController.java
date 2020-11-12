@@ -2,6 +2,7 @@ package com.gestvicole.gestionavicole.controllers;
 
 import com.gestvicole.gestionavicole.entities.Order;
 import com.gestvicole.gestionavicole.services.OrderService;
+import com.gestvicole.gestionavicole.utils.SearchBody;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,17 +27,29 @@ public class OrderController {
     }
 
     @GetMapping("/by-waiting")
-    private ResponseEntity<?> findAllOrderWaiting() {
+    public ResponseEntity<?> findAllOrderWaiting() {
         return ResponseEntity.ok(orderService.findAllOrderWaiting());
     }
 
-    @PostMapping("/save")
-    private ResponseEntity<?> create(@RequestBody Order order){
+    /*@PostMapping("/save")
+    public ResponseEntity<?> create(@RequestBody Order order){
         return ResponseEntity.ok(orderService.create(order));
+    }*/
+
+    @PostMapping("/toOrder")
+    public ResponseEntity<?> toOrder(@RequestBody Order order){
+        return ResponseEntity.ok(orderService.toOrder(order));
     }
 
     @PutMapping("/update")
-    private ResponseEntity<?> update(@RequestBody Order order){
+    public ResponseEntity<?> update(@RequestBody Order order){
         return ResponseEntity.ok(orderService.edit(order));
     }
+
+    @PostMapping("/qte-available")
+    public ResponseEntity<?> getQuantityAvailable(@RequestBody SearchBody searchBody) {
+        return ResponseEntity.ok(orderService.getQuantityAvailable(searchBody));
+    }
+
+
 }

@@ -10,5 +10,5 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
     Optional<Stock> findByProductId(Long productId);
 
     @Query("SELECT s from Stock s where s.product.id=:id and s.solde >=:qte")
-    Optional<Stock> checkBalance(@Param("id") Long id,@Param("qte") Integer qte);
+    Optional<Stock> checkBalance(@Param("id") Long id,@Param("qte") Double qte);
 }

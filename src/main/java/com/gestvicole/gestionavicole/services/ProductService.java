@@ -17,7 +17,7 @@ public class ProductService {
 
     public ResponseBody getAll() {
         try {
-            return ResponseBody.with(productRepository.findAll(),"Liste de categories");
+            return ResponseBody.with(productRepository.findAll(),"Liste de produits");
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseBody.error("Une erreur est survenue");

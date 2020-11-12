@@ -26,6 +26,8 @@ public class Production extends Auditable<Production> implements Serializable {
     private Integer generalEffective;
     @Column(name = "commercial_productions")
     private Integer commercialProductions;
+    @Column(name = "sold_production")
+    private Integer soldProduction = 0;
     @Column(name = "alveolus_broken")
     private Integer alveolusBroken;
     @Column(name = "prod_double_yellow")

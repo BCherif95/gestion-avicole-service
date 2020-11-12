@@ -22,7 +22,7 @@ public class StockOut extends AuditableParent<StockOut> implements Serializable 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "quantity_out")
-    private Integer quantityOut = 0;
+    private Double quantityOut = 0D;
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss")
     private Date date;
     @Enumerated(EnumType.STRING)
