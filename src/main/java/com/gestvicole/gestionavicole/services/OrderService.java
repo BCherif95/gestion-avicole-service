@@ -28,12 +28,12 @@ public class OrderService {
         this.productionRepository = productionRepository;
     }
 
-    public Integer getQuantityAvailable(SearchBody searchBody) {
+    public Integer getQuantityAvailable() {
 
         int qteProd = 0;
         int qteOrder = 0;
-        List<Production> productions = productionRepository.findAllByDate(searchBody.getDate());
-        List<Order> orders = orderRepository.findAllOrderByDate(searchBody.getDate());
+        List<Production> productions = productionRepository.findAll();
+        List<Order> orders = orderRepository.findAll();
 
         qteProd = productions
                 .stream()
@@ -43,7 +43,8 @@ public class OrderService {
                 .stream()
                 .map(Order::getQuantity)
                 .reduce(0,Integer::sum);
-        return qteProd - qteOrder;
+        int qteAvailable = qteProd - qteOrder;
+        return Math.max(qteAvailable, 0);
     }
 
     public ResponseBody findAll() {

@@ -2,7 +2,6 @@ package com.gestvicole.gestionavicole.controllers;
 
 import com.gestvicole.gestionavicole.entities.Order;
 import com.gestvicole.gestionavicole.services.OrderService;
-import com.gestvicole.gestionavicole.utils.SearchBody;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,9 +45,9 @@ public class OrderController {
         return ResponseEntity.ok(orderService.edit(order));
     }
 
-    @PostMapping("/qte-available")
-    public ResponseEntity<?> getQuantityAvailable(@RequestBody SearchBody searchBody) {
-        return ResponseEntity.ok(orderService.getQuantityAvailable(searchBody));
+    @GetMapping("/qte-available")
+    public ResponseEntity<?> getQuantityAvailable() {
+        return ResponseEntity.ok(orderService.getQuantityAvailable());
     }
 
 
