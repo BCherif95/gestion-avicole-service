@@ -7,6 +7,7 @@ import com.gestvicole.gestionavicole.repositories.OrderRepository;
 import com.gestvicole.gestionavicole.utils.ResponseBody;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +23,9 @@ public class CustomerService {
 
     public ResponseBody findAll() {
         try {
-            return ResponseBody.with(customerRepository.findAll(),"Liste de clients disponible");
+            List<Customer> list = customerRepository.findAll();
+            list.sort(Collections.reverseOrder());
+            return ResponseBody.with(list,"Liste de clients disponible");
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseBody.error("Une erreur est survenue");

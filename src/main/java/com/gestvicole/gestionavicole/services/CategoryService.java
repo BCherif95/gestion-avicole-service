@@ -1,9 +1,12 @@
 package com.gestvicole.gestionavicole.services;
+import com.gestvicole.gestionavicole.entities.Building;
 import com.gestvicole.gestionavicole.entities.Category;
 import com.gestvicole.gestionavicole.repositories.CategoryRepository;
 import com.gestvicole.gestionavicole.utils.ResponseBody;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,7 +20,9 @@ public class CategoryService {
 
     public ResponseBody getAll() {
         try {
-            return ResponseBody.with(categoryRepository.findAll(),"Liste de categories");
+            List<Category> list = categoryRepository.findAll();
+            list.sort(Collections.reverseOrder());
+            return ResponseBody.with(list,"Liste de categories");
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseBody.error("Une erreur est survenue");

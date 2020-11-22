@@ -7,10 +7,9 @@ import com.gestvicole.gestionavicole.repositories.OrderRepository;
 import com.gestvicole.gestionavicole.repositories.ProductionRepository;
 import com.gestvicole.gestionavicole.utils.Enumeration;
 import com.gestvicole.gestionavicole.utils.ResponseBody;
-import com.gestvicole.gestionavicole.utils.SearchBody;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,7 +48,9 @@ public class OrderService {
 
     public ResponseBody findAll() {
         try {
-            return ResponseBody.with(orderRepository.findAll(),"Liste de commandes disponibles");
+            List<Order> list = orderRepository.findAll();
+            list.sort(Collections.reverseOrder());
+            return ResponseBody.with(list,"Liste de commandes disponibles");
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseBody.error("Une erreur est survenue");
@@ -75,26 +76,6 @@ public class OrderService {
         }
     }
 
-   /* public ResponseBody create(Order order) {
-        try {
-            if (order.getQuantity() == 0) {
-                return ResponseBody.error("La quantité ne peut etre vide");
-            }
-            Production production = productionRepository.findById(order.getProduction().getId()).get();
-            Integer newQte = production.getCommercialProductions() - order.getQuantity();
-            production.setCommercialProductions(newQte);
-            productionRepository.save(production);
-            order.setNumber(parameterComponent.generateOrderNumber());
-            order.setAmount(order.getQuantity()*order.getUnitPrice());
-            orderRepository.save(order);
-            parameterComponent.updateOrderNumber();
-            return ResponseBody.with(order,"Ajouter avec succes");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseBody.error("Une erreur est survenue");
-        }
-    }*/
-
     public ResponseBody toOrder(Order order) {
         try {
             if (order.getQuantity() == 0) {
@@ -113,13 +94,10 @@ public class OrderService {
 
     public ResponseBody edit(Order order) {
         try {
-            if (orderRepository.findById(order.getId()).isPresent() && order.getQuantity() != 0) {
-                Optional<Production> production = productionRepository.findById(order.getProduction().getId());
-                order.setAmount(order.getQuantity()*order.getUnitPrice());
-                orderRepository.save(order);
-                return ResponseBody.with(order,"Modifier avec succes");
+            if (!orderRepository.findById(order.getId()).isPresent() || order.getQuantity() == 0) {
+                return ResponseBody.error("Une erreur est survenue");
             }
-            return ResponseBody.error("Une erreur est survenue");
+            return ResponseBody.with(orderRepository.save(order),"Modifier avec succes");
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseBody.error("Une erreur est survenue");

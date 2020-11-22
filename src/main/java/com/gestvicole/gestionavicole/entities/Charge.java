@@ -1,18 +1,20 @@
 package com.gestvicole.gestionavicole.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.gestvicole.gestionavicole.entities.parents.AbstractEntity;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "charge")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Charge {
+public class Charge extends AbstractEntity {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,9 +1,7 @@
 package com.gestvicole.gestionavicole.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.gestvicole.gestionavicole.entities.parents.AbstractEntity;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -14,7 +12,8 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChargeProduction {
+@EqualsAndHashCode(callSuper = true)
+public class ChargeProduction extends AbstractEntity {
     @Id
     @GeneratedValue
     private Long id;

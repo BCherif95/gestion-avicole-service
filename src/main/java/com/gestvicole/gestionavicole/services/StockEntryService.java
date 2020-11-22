@@ -7,6 +7,7 @@ import com.gestvicole.gestionavicole.repositories.StockRepository;
 import com.gestvicole.gestionavicole.utils.ResponseBody;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -76,7 +77,9 @@ public class StockEntryService {
 
     public ResponseBody findAll() {
         try {
-            return ResponseBody.with(stockEntryRepository.findAll(),"La liste des entrées de stock");
+            List<StockEntry> list = stockEntryRepository.findAll();
+            list.sort(Collections.reverseOrder());
+            return ResponseBody.with(list,"La liste des entrées de stock");
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseBody.error("Une erreur est survenue !");

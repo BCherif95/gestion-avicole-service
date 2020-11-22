@@ -1,4 +1,4 @@
-package com.gestvicole.gestionavicole.parents;
+package com.gestvicole.gestionavicole.entities.parents;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

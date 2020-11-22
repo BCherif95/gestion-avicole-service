@@ -1,12 +1,11 @@
 package com.gestvicole.gestionavicole.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.gestvicole.gestionavicole.parents.Auditable;
+import com.gestvicole.gestionavicole.entities.parents.AbstractEntity;
 import com.gestvicole.gestionavicole.utils.Enumeration;
 import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
 
 @EqualsAndHashCode(callSuper = true)
@@ -16,7 +15,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Order extends Auditable<Order> implements Serializable {
+public class Order extends AbstractEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

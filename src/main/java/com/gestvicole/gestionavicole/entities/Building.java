@@ -1,10 +1,9 @@
 package com.gestvicole.gestionavicole.entities;
 
-import com.gestvicole.gestionavicole.parents.Auditable;
+import com.gestvicole.gestionavicole.entities.parents.AbstractEntity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -13,7 +12,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Building extends Auditable<Building> implements Serializable {
+public class Building extends AbstractEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

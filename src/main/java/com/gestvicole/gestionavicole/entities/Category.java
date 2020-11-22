@@ -1,10 +1,9 @@
 package com.gestvicole.gestionavicole.entities;
 
-import com.gestvicole.gestionavicole.parents.AuditableParent;
+import com.gestvicole.gestionavicole.entities.parents.AbstractEntity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -13,7 +12,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Category extends AuditableParent<Category> implements Serializable {
+public class Category extends AbstractEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

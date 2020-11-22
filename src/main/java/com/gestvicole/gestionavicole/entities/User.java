@@ -1,14 +1,13 @@
 package com.gestvicole.gestionavicole.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.gestvicole.gestionavicole.parents.AuditableParent;
+import com.gestvicole.gestionavicole.entities.parents.AbstractEntity;
 import lombok.*;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,7 +19,7 @@ import java.util.Set;
 @ToString
 @EqualsAndHashCode(callSuper = false)
 @Table(name = "user")
-public class User extends AuditableParent<User> implements Serializable {
+public class User extends AbstractEntity {
 
     private static final long serialVersionUID = 1L;
     @Id

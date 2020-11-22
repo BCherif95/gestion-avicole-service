@@ -4,6 +4,8 @@ import com.gestvicole.gestionavicole.repositories.ProductRepository;
 import com.gestvicole.gestionavicole.utils.ResponseBody;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,7 +19,9 @@ public class ProductService {
 
     public ResponseBody getAll() {
         try {
-            return ResponseBody.with(productRepository.findAll(),"Liste de produits");
+            List<Product> list = productRepository.findAll();
+            list.sort(Collections.reverseOrder());
+            return ResponseBody.with(list,"Liste de produits");
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseBody.error("Une erreur est survenue");

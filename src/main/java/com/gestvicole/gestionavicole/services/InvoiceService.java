@@ -38,7 +38,9 @@ public class InvoiceService {
 
     public ResponseBody findAll(){
         try {
-            return ResponseBody.with(invoiceRepository.findAll(),"Les factures disponibles");
+            List<Invoice> list = invoiceRepository.findAll();
+            list.sort(Collections.reverseOrder());
+            return ResponseBody.with(list,"Les factures disponibles");
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseBody.error("Une erreur est survenue");

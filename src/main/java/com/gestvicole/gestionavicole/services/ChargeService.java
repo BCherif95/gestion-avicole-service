@@ -1,5 +1,6 @@
 package com.gestvicole.gestionavicole.services;
 
+import com.gestvicole.gestionavicole.entities.Building;
 import com.gestvicole.gestionavicole.entities.Charge;
 import com.gestvicole.gestionavicole.entities.ChargeProduction;
 import com.gestvicole.gestionavicole.entities.Production;
@@ -49,7 +50,9 @@ public class ChargeService {
 
     public ResponseBody findAll() {
         try {
-            return ResponseBody.with(chargeRepository.findAll(), "Les charges effectuées");
+            List<Charge> list = chargeRepository.findAll();
+            list.sort(Collections.reverseOrder());
+            return ResponseBody.with(list, "Les charges effectuées");
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseBody.error("La liste est vide");

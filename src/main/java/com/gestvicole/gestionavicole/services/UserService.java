@@ -35,6 +35,7 @@ public class UserService {
     public ResponseBody listOfUsers() {
         try {
             List<User> users = userRepository.findAll();
+            users.sort(Collections.reverseOrder());
             return ResponseBody.with(users, users.size() + " utilisateur.s trouve.s");
         } catch (Exception e) {
             e.printStackTrace();

@@ -8,6 +8,7 @@ import com.gestvicole.gestionavicole.utils.Enumeration;
 import com.gestvicole.gestionavicole.utils.ResponseBody;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -77,7 +78,9 @@ public class StockOutService {
 
     public ResponseBody findAll() {
         try {
-            return ResponseBody.with(stockOutRepository.findAll(),"La liste des sorties de stock");
+            List<StockOut> list = stockOutRepository.findAll();
+            list.sort(Collections.reverseOrder());
+            return ResponseBody.with(list,"La liste des sorties de stock");
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseBody.error("Une erreur est survenue !");

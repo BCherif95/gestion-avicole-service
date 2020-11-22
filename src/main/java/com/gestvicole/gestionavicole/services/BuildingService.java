@@ -7,10 +7,7 @@ import com.gestvicole.gestionavicole.utils.ResponseBody;
 import com.gestvicole.gestionavicole.wrapper.BuildingSaveEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.partitioningBy;
@@ -29,7 +26,9 @@ public class BuildingService {
 
     public ResponseBody getBuildings() {
         try {
-            return ResponseBody.with(buildingRepository.findAll(), "Liste des Batiments");
+            List<Building> list = buildingRepository.findAll();
+            list.sort(Collections.reverseOrder());
+            return ResponseBody.with(list, "Liste des Batiments");
         }catch (Exception e) {
             e.printStackTrace();
             return ResponseBody.error("Une erreur est survenue");

@@ -2,6 +2,7 @@ package com.gestvicole.gestionavicole.services;
 
 import com.gestvicole.gestionavicole.entities.Building;
 import com.gestvicole.gestionavicole.entities.Production;
+import com.gestvicole.gestionavicole.entities.parents.AbstractEntity;
 import com.gestvicole.gestionavicole.repositories.BuildingRepository;
 import com.gestvicole.gestionavicole.repositories.ProductionRepository;
 import com.gestvicole.gestionavicole.utils.ProjectUtils;
@@ -28,7 +29,9 @@ public class ProductionService {
 
     public ResponseBody findAll() {
         try {
-            return ResponseBody.with(productionRepository.findAll(), "Liste de productions");
+            List<Production> list = productionRepository.findAll();
+            list.sort(Collections.reverseOrder());
+            return ResponseBody.with(list, "Liste de productions");
         }catch (Exception e){
             e.printStackTrace();
             return ResponseBody.error("Une erreur est survenue!");
@@ -77,7 +80,7 @@ public class ProductionService {
         try {
             List<Production> productions = productionRepository.findAllByDateAndBuildingId(production.getDate(),production.getBuilding().getId());
             if (!productions.isEmpty()){
-                return ResponseBody.error("Il exite déjà une production a la date choisie");
+                return ResponseBody.error("Il existe déjà une production a la date choisie");
             }
             Building building = buildingRepository.findById(production.getBuilding().getId()).get();
             production.setGeneralEffective(building.getTotalLayer());
